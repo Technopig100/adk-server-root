@@ -1,0 +1,174 @@
+#!/bin/bash
+#set -e 
+
+### EXPORT ###
+export EDITOR='nano'
+export VISUAL='nano'
+export HISTCONTROL=ignoreboth:erasedups
+
+PS1='[\u@\h \W]\$ '
+
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+
+if [ -d "$HOME/.bin" ] ;
+  then PATH="$HOME/.bin:$PATH"
+fi
+
+if [ -d "$HOME/.local/bin" ] ;
+  then PATH="$HOME/.local/bin:$PATH"
+fi
+
+### ALIASES ###
+
+#list
+alias ls='ls --color=auto'
+alias la='ls -a'
+alias ll='ls -alFh'
+alias l='ls'
+alias l.="ls -A | egrep '^\.'"
+
+#fix obvious typo's
+alias cd..='cd ..'
+alias pdw='pwd'
+alias udpate='pacman -Syyu'
+alias upate='pacman -Syyu'
+alias updte='pacman -Syyu'
+alias updqte='pacman -Syyu'
+
+##colorize the grep command output for ease of use (good for log files)##
+alias grep='grep --color=auto'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+
+#pacman unlock
+alias unlock="rm /var/lib/pacman/db.lck"
+alias pacmanlock="rm /var/lib/pacman/db.lck"
+
+#refesh bash
+alias refresh="source ~/.bashrc"
+
+#update all of the packages
+alias update='pacman -Syyuu'
+
+#clean pacman cache
+alias clean='pacman -Scc'
+
+#download installed packages but don't install
+alias pacdn='pacman -Qqn | pacman -Sw -'
+
+#fixes
+alias fixkeys="/usr/bin/fix-pacman-databases-and-keys.sh"
+
+#continue download
+alias wget="wget -c"
+
+#generate a password
+alias password='openssl rand -base64 14'
+
+#systemd 
+alias syse='systemctl list-unit-files --state=enabled'
+alias sysd='systemctl list-unit-files --state=disabled'
+alias sysf="systemctl list-units --failed"
+
+#grub update
+alias update-grub='grub-mkconfig -o /boot/grub/grub.cfg'
+## alias install-grub-efi=' grub-install --target=x86_64-efi --efi-directory=/boot/efi --recheck'
+
+# Help people new to ADK-Linux
+alias apt-get='man pacman'
+alias apt='man pacman'
+alias please='echo "NO!"'
+alias adk='pamac'
+
+#backup contents of /etc/skel to hidden backup folder in home/user
+alias bupskel='cp -Rf /etc/skel ~/.skel-backup-$(date +%Y.%m.%d-%H.%M.%S)'
+
+#copy shell configs
+alias cb='cp /etc/skel/.bashrc ~/.bashrc && exec bash'
+
+#hardware info --short
+alias hw="hwinfo --short"
+
+#check vulnerabilities microcode
+alias microcode='grep . /sys/devices/system/cpu/vulnerabilities/*'
+
+#get fastest mirrors in your neighborhood
+alias mirror="reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist"
+alias mirrord="reflector --latest 30 --number 10 --sort delay --save /etc/pacman.d/mirrorlist"
+alias mirrors="reflector --latest 30 --number 10 --sort score --save /etc/pacman.d/mirrorlist"
+alias mirrora="reflector --latest 30 --number 10 --sort age --save /etc/pacman.d/mirrorlist"
+
+#experimental - best option for the moment
+alias ram='rate-mirrors --allow-root arch | tee /etc/pacman.d/mirrorlist'
+
+#recent Installed Packages
+alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
+alias riplong="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -3000 | nl"
+
+#iso and version used to install ADK-Linux
+alias iso="bat /etc/dev-rel"
+alias isoo="bat /etc/adklinux/info"
+
+#Cleanup orphaned packages
+alias cleanup='pacman -Rns $(pacman -Qtdq)'
+
+#search content with ripgrep
+alias rg="rg --sort path"
+
+#search with grep
+alias pt='grep -Ril'
+
+#get the error messages from journalctl
+alias jctl="journalctl -p 3 -xb"
+
+#nano for important configuration files
+#know what you do in these files
+alias npacman="$EDITOR /etc/pacman.conf"
+alias ngrub="$EDITOR /etc/default/grub"
+alias nmkinitcpio="$EDITOR /etc/mkinitcpio.conf"
+alias nmirrorlist="$EDITOR /etc/pacman.d/mirrorlist"
+alias nadkmirrorlist="$EDITOR /etc/pacman.d/adklinux-mirrorlist"
+alias nfstab="$EDITOR /etc/fstab"
+alias nhosts="$EDITOR /etc/hosts"
+alias nhostname="$EDITOR /etc/hostname"
+
+#reading logs with bat
+alias lpacman="bat /var/log/pacman.log"
+
+#systeminfo
+alias probe="hw-probe -all -upload"
+
+# # ex = EXtractor for all kinds of archives
+# # usage: ex <file>
+ex ()
+{
+  if [ -f $1 ] ; then
+    case $1 in
+      *.tar.bz2)   tar xjf $1   ;;
+      *.tar.gz)    tar xzf $1   ;;
+      *.bz2)       bunzip2 $1   ;;
+      *.rar)       unrar x $1   ;;
+      *.gz)        gunzip $1    ;;
+      *.tar)       tar xf $1    ;;
+      *.tbz2)      tar xjf $1   ;;
+      *.tgz)       tar xzf $1   ;;
+      *.zip)       unzip $1     ;;
+      *.Z)         uncompress $1;;
+      *.7z)        7z x $1      ;;
+      *.deb)       ar x $1      ;;
+      *.tar.xz)    tar xf $1    ;;
+      *.tar.zst)   tar xf $1    ;;
+      *)           echo "'$1' cannot be extracted via ex()" ;;
+    esac
+  else
+    echo "'$1' is not a valid file"
+  fi
+}
+
+#btrfs aliases
+alias btrfsfs="btrfs filesystem df /"
+alias btrfsli="btrfs su li / -t"
+
+
