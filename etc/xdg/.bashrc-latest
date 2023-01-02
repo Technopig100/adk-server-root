@@ -95,10 +95,11 @@ alias hw="hwinfo --short"
 alias microcode='grep . /sys/devices/system/cpu/vulnerabilities/*'
 
 #get fastest mirrors in your neighborhood
-alias mirror="reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist"
-alias mirrord="reflector --latest 30 --number 10 --sort delay --save /etc/pacman.d/mirrorlist"
-alias mirrors="reflector --latest 30 --number 10 --sort score --save /etc/pacman.d/mirrorlist"
-alias mirrora="reflector --latest 30 --number 10 --sort age --save /etc/pacman.d/mirrorlist"
+alias mirror="reflector -f 30 -l 30 --protocol https,http --number 10 --verbose --save /etc/pacman.d/mirrorlist"
+alias mirrord="reflector --latest 30 --protocol https,http --number 10 --sort delay --save /etc/pacman.d/mirrorlist"
+alias mirrors="reflector --latest 30 --protocol https,http --number 10 --sort score --save /etc/pacman.d/mirrorlist"
+alias mirrora="reflector --latest 30 --protocol https,http --number 10 --sort age --save /etc/pacman.d/mirrorlist"
+
 
 #experimental - best option for the moment
 alias ram='rate-mirrors --allow-root arch | tee /etc/pacman.d/mirrorlist'
