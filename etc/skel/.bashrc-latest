@@ -5,6 +5,7 @@
 export EDITOR='nano'
 export VISUAL='nano'
 export HISTCONTROL=ignoreboth:erasedups
+export NEXTCLOUD_PHP_CONFIG=/etc/webapps/nextcloud/php.ini
 
 PS1='[\u@\h \W]\$ '
 
@@ -181,6 +182,10 @@ alias btrfsli="sudo btrfs su li / -t"
 
 #search with grep
 alias pt='grep -Ril'
+
+# Database Mariadb  
+alias mdb='sudo mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql'
+alias smdb='sudo systemctl enable --now mariadb && sudo mysql_secure_installation'
 
 #if you would like to have your own aliases then add them to .bashrc-personal file
 [[ -f ~/.bashrc-personal ]] && . ~/.bashrc-personal
